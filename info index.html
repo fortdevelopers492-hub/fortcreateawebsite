@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Fort Logo Circle Cropped.png" type="image/png">
+    <title>Fort - Website Builder Wizard</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="info script.js"></script>
+    <link rel="stylesheet" href="info styles.css">
+</head>
+<body>
+
+    <header>
+        <h2>Fort Workspace</h2>
+        <div class="header-actions">
+            <button class="btn-blue"><a href="index.html">Home</a></button> 
+            <button class="btn-blue" onclick="openTemplateSelectorModal()">Choose Template</button> 
+            <button class="btn-blue" onclick="saveCurrentWorkspaceData(true)">Save Progress</button> 
+            <button class="btn-blue" style="background-color: #28a745;" onclick="sendProjectToFortDevelopers()">Send to Fort</button> 
+        </div>
+    </header>
+
+    <main id="main-workspace" class="hidden-node"> 
+        <div class="workspace-card">
+            <div class="form-input-container">
+                <label>Website Name</label> 
+                <input type="text" id="ws-name" class="form-field-control" placeholder="Enter your website name">
+            </div>
+            
+            <div class="form-input-container">
+                <label>Website Layouts</label> 
+                <textarea id="ws-layouts" class="form-field-control" rows="4" placeholder="Describe layout details..."></textarea>
+                <div class="input-description">Describe the view of the website, pages content etc in proper details.</div> 
+            </div>
+
+            <div class="form-input-container">
+                <label>Website Features</label> 
+                <textarea id="ws-features" class="form-field-control" rows="4" placeholder="Describe feature rules..."></textarea>
+                <div class="input-description">Describe the uses of buttons, pages, etc in the website.</div> 
+            </div>
+
+            <div class="asset-section">
+                <h3>Linked Templates</h3>
+                <div id="linked-templates-box" class="asset-grid"></div>
+            </div>
+
+            <div class="asset-section">
+                <h3>Linked Files</h3>
+                <div id="linked-files-box" class="asset-grid"></div> 
+            </div>
+
+            <div class="margin-top-lg" style="border-top: 1px solid #dee2e6; padding-top: 20px;">
+                <button class="btn-red" onclick="promptProjectDeletionFlow()">Delete Project</button> 
+            </div>
+        </div>
+    </main>
+
+    <button class="fab-attach-btn" onclick="openFileUploadModal()">+</button> 
+
+    <div id="auth-modal" class="modal-overlay"> 
+        <div id="auth-modal-content" class="modal-box"> 
+            </div>
+    </div>
+
+    <div id="secondary-modal" class="modal-overlay">
+        <div id="secondary-modal-content" class="modal-box">
+            </div>
+    </div>
+
+</body>
+</html>

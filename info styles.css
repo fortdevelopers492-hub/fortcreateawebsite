@@ -1,0 +1,261 @@
+:root {
+    --fort-blue: #007bff;
+    --fort-blue-light: #0056b3;
+    --fort-gray-slate: #6c757d;
+    --fort-light-bg: #f8f9fa;
+    --danger-red: #dc3545;
+    --dark-charcoal: #212529;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--fort-light-bg);
+    color: var(--dark-charcoal);
+}
+
+/* Utility Layout Classes */
+.hidden-node { display: none !important; }
+.text-center { text-align: center; }
+.margin-top-xs { margin-top: 8px; }
+.margin-top-sm { margin-top: 14px; }
+.margin-top-md { margin-top: 20px; }
+.margin-top-lg { margin-top: 30px; }
+.margin-bottom-sm { margin-bottom: 14px; }
+.text-danger-alert { color: var(--danger-red); font-size: 0.85rem; margin-top: 4px; }
+        
+/* Buttons Components */
+.btn-blue { background-color: var(--fort-blue); color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+.btn-blue:disabled { background-color: #a0cfff; cursor: not-allowed; }
+.btn-gray { background-color: var(--fort-gray-slate); color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; }
+.btn-red { background-color: var(--danger-red); color: white; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; }
+.btn-blue a { text-decoration: none; color: white; }
+
+/* Main Workspace Container Layout */
+header {
+    background: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.workspace-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-input-container {
+    margin-bottom: 18px;
+}
+
+.form-input-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-field-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-field-control:focus {
+    outline: none;
+    border-color: var(--fort-blue);
+}
+
+.input-description {
+    font-size: 0.85rem;
+    color: var(--fort-gray-slate);
+    margin-top: 4px;
+}
+
+/* Asset Display Containers */
+.asset-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.asset-item {
+    background: #f1f3f5;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Overlay Modals Framework */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-box-large {
+    max-width: 800px;
+}
+
+/* Floating Action Button Component */
+.fab-attach-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--fort-blue);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.template-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.template-card {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+    background: white;
+    cursor: pointer;
+}
+
+.template-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.template-card-body {
+    padding: 12px;
+}
+
+.preview-box {
+    width: 100%;
+    height: 180px;
+    border: 2px dashed #dee2e6;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8f9fa;
+}
+        
+.preview-box img, .preview-box video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.btn-special-home {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.template-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    max-height: 450px; /* Limits height to activate scrollbar if contents overflow */
+    overflow-y: auto;  /* Enables vertical scrolling */
+    padding-right: 5px;
+}
+
+/* Horizontal thumbnail scroll bar layout for multi-image expanded modal views */
+.template-thumbnail-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.thumbnail-img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.thumbnail-img.active {
+    border-color: var(--fort-blue);
+}

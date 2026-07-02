@@ -1,0 +1,40 @@
+:root {
+    --fort-blue-primary: #0044cc;
+    --fort-blue-dark: #002244;
+    --fort-blue-light: #0288d1;
+    --fort-blue-teal: #004d40;
+    --fort-blue-mint: #e0f2f1;
+    --fort-white-pure: #ffffff;
+    --fort-white-snow: #fcfcfc;
+    --fort-gray-bg: #f4f7f6;
+    --fort-gray-border: #cbd5e0;
+    --fort-gray-slate: #718096;
+    --fort-danger-red: #e53e3e;
+    --fort-danger-bg: #fff5f5;
+}
+
+body { font-family: sans-serif; line-height: 1.6; color: #333; padding: 40px; background-color: #f4f7f6; max-width: 800px; margin: 0 auto; }
+.legal-box { background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #cbd5e0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+h1, h2, h3 { color: #003366; }
+h4 { color: #ffffff; }
+.back-btn { display: inline-block; background-color: #0288d1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; margin-bottom: 20px; }
+
+/* Unified Structural Button Control Elements Styles */
+.btn-blue, .btn-gray, .btn-danger, .btn-sm-pencil {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.btn-blue { background-color: var(--fort-blue-light); color: var(--fort-white-pure); }
+.btn-blue:hover { background-color: #0277bd; }
+.btn-blue:disabled { background-color: #b3e5fc !important; color: #81d4fa !important; cursor: not-allowed; }
+
+.btn-blue a { text-decoration: none; color: white; }

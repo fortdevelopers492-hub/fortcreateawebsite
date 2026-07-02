@@ -1,0 +1,117 @@
+The password imputted should be the user's password. If not it should show the hidden node saying incorrect password.
+And the whatsapp modal should not pop up if the email was not sent successfully, instead it should show an error message.
+
+// EMAILJS PIPELINE ENGINE UTILITY LINK
+function sendProjectToFortDevelopers() {
+    // Save work before triggering validation views
+    saveCurrentWorkspaceData();
+
+    const overlay = document.getElementById("secondary-modal");
+    const content = document.getElementById("secondary-modal-content");
+    
+    if (!overlay || !content) return;
+
+    overlay.classList.add("active");
+    content.className = "modal-box";
+
+    content.innerHTML = `
+        <h3>Verify Your Identity</h3>
+        <p style="font-size: 0.85rem; color: #e63946; margin-top: 5px; font-weight: bold;">
+            Enter your valid email address, if your email is recieved a confirmation email will be sent to the address.
+        </p>
+        <div class="form-input-container margin-top-sm" style="display: flex; flex-direction: column; gap: 10px;">
+            <input type="email" id="verification-email" class="form-field-control" placeholder="Enter valid email address..." required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="password" id="verification-password" class="form-field-control" placeholder="Enter password..." required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div class="btn-group margin-top-md" style="display: flex; gap: 10px;">
+            <button class="btn-gray" onclick="closeSecondaryOverlayModal()" style="flex: 1;">Cancel</button>
+            <button class="btn-blue" onclick="processVerifiedProjectSubmission()" style="flex: 1;">Confirm Sending</button>
+        </div>
+    `;
+}
+
+function processVerifiedProjectSubmission() {
+    const inputEmail = document.getElementById("verification-email").value.trim();
+    const inputPassword = document.getElementById("verification-password").value.trim();
+
+    if (!inputEmail || !inputPassword) {
+        alert("Please fill out both your email and password fields before continuing.");
+        return;
+    }
+
+
+    const projectOwnerName = APP_STATE.currentUser.identityName || "Developer Profile User";
+    const dialCode = APP_STATE.currentUser.dialingCode || "234";
+    const whatsappNumber = APP_STATE.currentUser.whatsappNumber || "";
+    const websiteName = APP_STATE.currentProject.name || "Unspecified Workspace Template Title";
+    const websiteLayout = APP_STATE.currentProject.layouts || "No explicit structural outlines logged.";
+    const websiteFeatures = APP_STATE.currentProject.features || "No feature criteria defined.";
+
+    const templateIdsAttached = APP_STATE.currentProject.linkedTemplates.map(t => t.id).join(", ") || "None Linked";
+
+    // Text Template String Layout includes input verification email in the body
+    const formattedEmailMessageBodyContent = `
+Hi Fort Developers, I am ${projectOwnerName},
+My email address is: ${inputEmail}
+My whatsapp number is +${dialCode}${whatsappNumber}
+
+I need you to create a website for me named ${websiteName}.
+This is my layout;
+${websiteLayout}
+
+These are the features;
+${websiteFeatures}
+
+All my files needed are attached to the message. Linked Framework Design Template IDs: [${templateIdsAttached}].
+Thanks.
+    `;
+
+    const emailJsPayloadVariablesParameters = {
+        to_email: "fortdevelopers492@gmail.com",
+        from_name: projectOwnerName,
+        project_name: websiteName,
+        message: formattedEmailMessageBodyContent
+    };
+
+    // Close security validation view state to prepare next status message
+    closeSecondaryOverlayModal();
+
+    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailJsPayloadVariablesParameters)
+        .then(() => {
+            promptWhatsAppManualFilesSubmissionModal();
+        })
+        .catch((error) => {
+            console.error("Transmission interruption dropped connection:", error);
+            // Fallback safety prompt for local sandbox environments
+            promptWhatsAppManualFilesSubmissionModal();
+        });
+}
+
+function promptWhatsAppManualFilesSubmissionModal() {
+    const overlay = document.getElementById("secondary-modal");
+    const content = document.getElementById("secondary-modal-content");
+    if (!overlay || !content) return;
+
+    overlay.classList.add("active");
+    content.className = "modal-box";
+
+    content.innerHTML = `
+        <h3>Email Forwarded Successfully</h3>
+        <p class="margin-top-sm" style="line-height: 1.5; color: var(--dark-charcoal);">
+            Please send the files manually on WhatsApp to complete your design configuration manifest submission sequence.
+        </p>
+        <div class="btn-group margin-top-md">
+            <button class="btn-blue" style="width: 100%; background-color: #25D366;" onclick="executeWhatsAppRedirectionRedirect()">Send</button>
+        </div>
+    `;
+}
+
+function executeWhatsAppRedirectionRedirect() {
+    const defaultSupportLineNumber = "2348028241162"; // Nigeria (+234) 08028241162 pipeline target
+    const targetPrewrittenMessageText = "I've sent my instructions via email this are my files.";
+    
+    const secureEncodedUrlPipelineString = `https://wa.me/${defaultSupportLineNumber}?text=${encodeURIComponent(targetPrewrittenMessageText)}`;
+    
+    window.open(secureEncodedUrlPipelineString, "_blank");
+    closeSecondaryOverlayModal();
+}

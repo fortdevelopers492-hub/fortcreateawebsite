@@ -1,0 +1,138 @@
+Make the template gallery a html page on its own. Also give me the css and the js to perform the functions and link based on id.
+The pictures are not showing and cancel and link button are not working. Note that only one picture should show in non-expanded view and all pictures in expanded view. In expanded view the number of picture containers should be equivalent to the number of pictures.
+
+// CHOOSE TEMPLATE MODAL FLOW 
+// Dedicated static runtime source for templates to prevent database sync issues
+const HARDCODED_TEMPLATES_ARRAY = [
+    { 
+        id: "tmpl_001", 
+        name: "E-Commerce Basic", 
+        category: "Retail", 
+        description: "Clean grid layout with minimal shopping cart utilities.", 
+        images: ["https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500"] 
+    },
+    { 
+        id: "tmpl_002", 
+        name: "Creative Agency Portfolio", 
+        category: "Corporate", 
+        description: "Bespoke look targeted toward digital agencies.", 
+        images: ["https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=500"] 
+    },
+    { 
+        id: "tmpl_003", 
+        name: "SaaS Application Landing Page", 
+        category: "Tech", 
+        description: "High converting dark layout showcasing technical copy fields.", 
+        images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500"] 
+    },
+    { 
+        id: "tmpl_004", 
+        name: "Fort", 
+        category: "Tech", 
+        description: "A website advertising Fort", 
+        images: ["tmpl_004_1.png", "tmpl_004_2.png", "tmpl_004_3.png", "tmpl_004_4.png"] 
+    }
+];
+
+function openTemplateSelectorModal() {
+    const overlay = document.getElementById("secondary-modal");
+    const content = document.getElementById("secondary-modal-content");
+    overlay.classList.add("active");
+    content.className = "modal-box modal-box-large";
+
+    content.innerHTML = `
+        <h3>Choose a Website Design Framework Template</h3>
+        <div class="form-input-container margin-top-sm">
+            <input type="text" id="tmpl-search-bar" class="form-field-control" placeholder="Search templates by ID, Name or Scope description details..." oninput="filterTemplateGalleryView()">
+        </div>
+        <div id="tmpl-gallery-target" class="template-gallery"></div>
+        <div class="margin-top-md text-center">
+            <button class="btn-gray" onclick="closeSecondaryOverlayModal()">Close</button>
+        </div>
+    `;
+    filterTemplateGalleryView();
+}
+
+function filterTemplateGalleryView() {
+    const query = document.getElementById("tmpl-search-bar").value.toLowerCase();
+    const target = document.getElementById("tmpl-gallery-target");
+    target.innerHTML = '';
+
+    // Reads from the local document script array source instead of the local storage database layer
+    const matches = HARDCODED_TEMPLATES_ARRAY.filter(t => 
+        t.id.toLowerCase().includes(query) || 
+        t.name.toLowerCase().includes(query) || 
+        t.description.toLowerCase().includes(query)
+    );
+
+    matches.forEach(t => {
+        const card = document.createElement("div");
+        card.className = "template-card";
+        
+        // Displays the first picture in the non-expanded view layout parameter
+        const initialDisplayImage = (t.images && t.images.length > 0) ? t.images[0] : '';
+
+        card.innerHTML = `
+            <img src="${initialDisplayImage}" alt="${t.name}">
+            <div class="template-card-body">
+                <h4>${t.name}</h4>
+                <p style="font-size:0.8rem; color:gray; margin-top:4px;">${t.description.substring(0, 60)}...</p>
+            </div>
+        `;
+        card.onclick = () => openExpandedTemplateDetailsView(t);
+        target.appendChild(card);
+    });
+}
+
+function openExpandedTemplateDetailsView(templateObj) {
+    const content = document.getElementById("secondary-modal-content");
+    const initialMainImage = (templateObj.images && templateObj.images.length > 0) ? templateObj.images[0] : '';
+
+    // Generate thumbnails element buttons if the template contains multiple images
+    let thumbnailsHTML = '';
+    if (templateObj.images && templateObj.images.length > 1) {
+        thumbnailsHTML = `<div class="template-thumbnail-row">`;
+        templateObj.images.forEach((imgSrc, idx) => {
+            thumbnailsHTML += `
+                <img src="${imgSrc}" 
+                     class="thumbnail-img ${idx === 0 ? 'active' : ''}" 
+                     onclick="updateMainExpandedImagePreview(this, '${imgSrc}')" 
+                     alt="Thumbnail ${idx + 1}">
+            `;
+        });
+        thumbnailsHTML += `</div>`;
+    }
+
+    content.innerHTML = `
+        <h3>${templateObj.name}</h3>
+        <p style="color:var(--fort-gray-slate); font-size:0.85rem; margin-bottom:10px;">Template Infrastructure Identification Key Reference: ${templateObj.id}</p>
+        
+        <img id="expanded-main-preview" src="${initialMainImage}" style="width:100%; height:280px; object-fit:cover; border-radius:6px;" />
+        
+        ${thumbnailsHTML}
+        
+        <p class="margin-top-sm" style="line-height:1.5;">${templateObj.description}</p>
+        <div class="btn-group margin-top-md" style="display:flex; gap:10px;">
+            <button class="btn-gray" onclick="openTemplateSelectorModal()" style="flex:1;">Back to Gallery</button>
+            <button class="btn-blue" onclick="linkTemplateToCurrentProject('${templateObj.id}', '${templateObj.name}')" style="flex:1;">Choose Template</button>
+        </div>
+    `;
+}
+
+// Interactive helper utility function to switch main picture in expanded view
+function updateMainExpandedImagePreview(thumbnailElement, targetImgSrc) {
+    document.getElementById("expanded-main-preview").src = targetImgSrc;
+    const thumbnails = document.querySelectorAll(".thumbnail-img");
+    thumbnails.forEach(el => el.classList.remove("active"));
+    thumbnailElement.classList.add("active");
+}
+
+function linkTemplateToCurrentProject(id, name) {
+    if (!APP_STATE.currentProject.linkedTemplates.some(t => t.id === id)) {
+        APP_STATE.currentProject.linkedTemplates.push({ id, name });
+        saveCurrentWorkspaceData();
+        renderAssetGridContainers();
+    }
+    closeSecondaryOverlayModal();
+}
+
